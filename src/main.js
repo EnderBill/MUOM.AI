@@ -1,14 +1,19 @@
-import { Client, Events, GatewayIntentBits } from 'discord.js'
+//yarn open
+import { Client, GatewayIntentBits } from 'discord.js'
 import dotenv from 'dotenv'
+import {useAppStore} from '@/store/app'
+import vuelnit from '@/core/vce'
+import {loadEvents,loadCommands} from '@/core/loader'
 
 dotenv.config()
 
+vuelnit()
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
+const appStore = useAppStore()
+appStore.client=client
 
-client.once(
-    Events.ClientReady, (c) => {
-        console.log(`準備就緒！已登錄為 ${c.user.tag}`)
-    }
-)
+loadCommands()
+loadEvents()
 
-client.login(process.env.TOKEN)
+client.login(process.env.Token)
